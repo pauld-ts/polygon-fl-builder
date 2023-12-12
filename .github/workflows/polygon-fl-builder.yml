@@ -1,0 +1,23 @@
+name: Polygon FL binary builder
+run-name: Polygon FL binary builder
+on: [push]
+permissions:
+  contents: write
+
+env:
+  BOR_VERSION: v1.1.0
+
+jobs:
+  build-bor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: "maticnetwork/bor"
+          ref: "${{ env.BOR_VERSION }}"
+      - uses: actions/checkout@v4
+        with:
+          repository: "FastLane-Labs/sentry-patch"
+          ref: "main"
+          path: "sentry-patch"
+      - run: "git apply --stat sentry-patch/announce_only.patch"
