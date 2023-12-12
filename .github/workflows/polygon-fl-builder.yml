@@ -5,7 +5,7 @@ permissions:
   contents: write
 
 env:
-  BOR_VERSION: v1.1.0
+  BOR_VERSION: v1.2.0
 
 jobs:
   build-bor:
@@ -20,11 +20,9 @@ jobs:
           repository: "FastLane-Labs/sentry-patch"
           ref: "main"
           path: "sentry-patch"
-      # - run: "ls -lah"
       - run: "make bor"
       - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-nopatch"
-      - run: "rm -f /home/runner/go/bin/bor"
-      - run: "git apply sentry-patch/announce_only_bor_v1.1.0_and_lower.patch"
+      - run: "git apply sentry-patch/announce_only.patch"
       - run: "make bor"
       - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-patch"
       - run: tar -czvf bor-${{ env.BOR_VERSION }}.tgz -C /home/runner/go/bin/ bor-nopatch bor-patch
