@@ -21,3 +21,4 @@ jobs:
           ref: "main"
           path: "sentry-patch"
       - run: "git apply --stat sentry-patch/announce_only.patch"
+      - run: "go version"
