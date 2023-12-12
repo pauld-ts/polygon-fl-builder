@@ -20,5 +20,11 @@ jobs:
           repository: "FastLane-Labs/sentry-patch"
           ref: "main"
           path: "sentry-patch"
-      - run: "git apply --stat sentry-patch/announce_only.patch"
-      - run: "go version"
+      - run: "git apply sentry-patch/announce_only.patch"
+      - run: "make bor"
+      - run: "go/bin/bor version"
+      # - run: tar -czvf bor-${{ env.BOR_VERSION }}.tgz -C go/bin/ bor
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: "bor-${{ env.BOR_VERSION }}.tgz"
+      #     path: "bor-${{ env.BOR_VERSION }}.tgz"
