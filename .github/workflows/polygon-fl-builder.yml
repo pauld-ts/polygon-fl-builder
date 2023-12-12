@@ -21,11 +21,25 @@ jobs:
           ref: "main"
           path: "sentry-patch"
       # - run: "ls -lah"
+      - run: "make bor"
+      - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-nopatch"
       - run: "git apply sentry-patch/announce_only_bor_v1.1.0_and_lower.patch"
       - run: "make bor"
-      - run: "/home/runner/go/bin/bor version"
-      # - run: tar -czvf bor-${{ env.BOR_VERSION }}.tgz -C go/bin/ bor
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: "bor-${{ env.BOR_VERSION }}.tgz"
-      #     path: "bor-${{ env.BOR_VERSION }}.tgz"
+      - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-patch"
+      - run: tar -czvf bor-${{ env.BOR_VERSION }}.tgz -C /home/runner/go/bin/ bor-nopatch bor-patch
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "bor-${{ env.BOR_VERSION }}.tgz"
+          path: "bor-${{ env.BOR_VERSION }}.tgz"
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-bor]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: "bor-${{ env.BOR_VERSION }}.tgz"
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            nbor-${{ env.BOR_VERSION }}.tgz
+          tag_name: "bor-${{ env.BOR_VERSION }}"
