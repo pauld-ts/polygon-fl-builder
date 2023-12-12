@@ -23,7 +23,7 @@ jobs:
       # - run: "ls -lah"
       - run: "git apply sentry-patch/announce_only_bor_v1.1.0_and_lower.patch"
       - run: "make bor"
-      - run: "go/bin/bor version"
+      - run: "/home/runner/go/bin/bor version"
       # - run: tar -czvf bor-${{ env.BOR_VERSION }}.tgz -C go/bin/ bor
       # - uses: actions/upload-artifact@v3
       #   with:
