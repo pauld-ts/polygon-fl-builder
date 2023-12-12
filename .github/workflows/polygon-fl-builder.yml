@@ -23,6 +23,7 @@ jobs:
       # - run: "ls -lah"
       - run: "make bor"
       - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-nopatch"
+      - run: "rm -f /home/runner/go/bin/bor"
       - run: "git apply sentry-patch/announce_only_bor_v1.1.0_and_lower.patch"
       - run: "make bor"
       - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-patch"
@@ -41,5 +42,5 @@ jobs:
       - uses: softprops/action-gh-release@v1
         with:
           files: |
-            nbor-${{ env.BOR_VERSION }}.tgz
+            bor-${{ env.BOR_VERSION }}.tgz
           tag_name: "bor-${{ env.BOR_VERSION }}"
