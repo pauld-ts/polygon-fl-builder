@@ -20,6 +20,7 @@ jobs:
           repository: "FastLane-Labs/sentry-patch"
           ref: "main"
           path: "sentry-patch"
+      - run: "ls -lah"
       - run: "git apply sentry-patch/announce_only.patch"
       - run: "make bor"
       - run: "go/bin/bor version"
