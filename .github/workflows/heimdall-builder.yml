@@ -20,3 +20,5 @@ jobs:
         with:
           repository: "maticnetwork/heimdall"
           ref: "${{ env.HEIMADALL_VERSION }}"
+      - run: "make install"
+      - run: "ls -la /home/runner/go/bin/"
