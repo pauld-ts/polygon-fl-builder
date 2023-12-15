@@ -21,4 +21,20 @@ jobs:
           repository: "maticnetwork/heimdall"
           ref: "${{ env.HEIMADALL_VERSION }}"
       - run: "make install"
-      - run: "ls -la /home/runner/go/bin/"
+      - run: tar -czvf heimdall-${{ env.HEIMADALL_VERSION }}.tgz -C /home/runner/go/bin/ heimdalld heimdallcli
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "heimdall-${{ env.HEIMADALL_VERSION }}.tgz"
+          path: "heimdall-${{ env.HEIMADALL_VERSION }}.tgz"
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-heimdall]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: "heimdall-${{ env.HEIMADALL_VERSION }}.tgz"
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            heimdall-${{ env.HEIMADALL_VERSION }}.tgz
+          tag_name: "heimdall-${{ env.HEIMADALL_VERSION }}"
