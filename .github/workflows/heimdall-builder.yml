@@ -1,0 +1,22 @@
+name: Heimdall binary builder
+run-name: Heimdall binary builder
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Heimdall Version'
+        required: true
+permissions:
+  contents: write
+
+env:
+  HEIMADALL_VERSION: ${{ github.event.inputs.version }}
+
+jobs:
+  build-heimdall:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: "maticnetwork/heimdall"
+          ref: "${{ env.HEIMADALL_VERSION }}"

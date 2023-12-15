@@ -1,11 +1,16 @@
 name: Polygon FL binary builder
 run-name: Polygon FL binary builder
-on: [push]
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Bor Version'
+        required: true
 permissions:
   contents: write
 
 env:
-  BOR_VERSION: v1.2.0
+  BOR_VERSION: ${{ github.event.inputs.version }}
 
 jobs:
   build-bor:
