@@ -20,8 +20,16 @@ jobs:
         with:
           repository: "maticnetwork/heimdall"
           ref: "${{ env.HEIMADALL_VERSION }}"
+      - uses: actions/checkout@v4
+        with:
+          ref: "main"
+          path: "checkpoint-patch"
       - run: "make install"
-      - run: tar -czvf heimdall-${{ env.HEIMADALL_VERSION }}.tgz -C /home/runner/go/bin/ heimdalld heimdallcli
+      - run: "cp /home/runner/go/bin/heimdalld /home/runner/go/bin/heimdalld-nopatch"
+      - run: "git apply checkpoint-patch/checkpoint-gas.patch"
+      - run: "make install"
+      - run: "cp /home/runner/go/bin/heimdalld /home/runner/go/bin/heimdalld-patch"
+      - run: tar -czvf heimdall-${{ env.HEIMADALL_VERSION }}.tgz -C /home/runner/go/bin/ heimdalld-nopatch heimdalld-patch heimdallcli
       - uses: actions/upload-artifact@v3
         with:
           name: "heimdall-${{ env.HEIMADALL_VERSION }}.tgz"

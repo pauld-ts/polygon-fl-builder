@@ -1,0 +1,17 @@
+diff --git a/helper/tx.go b/helper/tx.go
+index 6e27bed1..0b593eb7 100644
+--- a/helper/tx.go
++++ b/helper/tx.go
+@@ -111,7 +111,11 @@ func (c *ContractCaller) SendCheckpoint(signedData []byte, sigs [][3]*big.Int, r
+ 		"sigs", strings.Join(s, ","),
+ 		"data", hex.EncodeToString(signedData),
+ 	)
+-
++	gasTip := big.NewInt(1000000000)
++	gasFeeCap := big.NewInt(0).Mul(auth.GasPrice, big.NewInt(2))
++	auth.GasFeeCap = gasFeeCap
++	auth.GasTipCap = gasTip
++	auth.GasPrice = nil
+ 	tx, err := rootChainInstance.SubmitCheckpoint(auth, signedData, sigs)
+ 	if err != nil {
+ 		Logger.Error("Error while submitting checkpoint", "error", err)
