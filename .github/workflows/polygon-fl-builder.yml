@@ -25,6 +25,10 @@ jobs:
           repository: "FastLane-Labs/sentry-patch"
           ref: "main"
           path: "sentry-patch"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: false
       - run: "make bor"
       - run: "cp /home/runner/go/bin/bor /home/runner/go/bin/bor-nopatch"
       - run: "git apply sentry-patch/announce_only.patch"
